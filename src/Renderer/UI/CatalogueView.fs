@@ -16,6 +16,9 @@ open CommonTypes
 open PopupView
 open Sheet.SheetInterface
 open DrawModelType
+open Fable.Core
+open FilesIO
+
 
 
 let private menuItem styles label onClick =
@@ -357,8 +360,16 @@ let private createVerilogPopup model dispatch =
     let buttonText = "Save"
     let buttonAction =
         fun (dialogData : PopupDialogData) ->
-            failwithf "Not implemented yet!" 
-            // createCompStdLabel (regType inputInt) model dispatch
+            match model.CurrentProj with
+            | None -> failwithf "What? current project cannot be None at this point in writing Verilog Component"
+            | Some project ->
+                let name = getText dialogData
+                let folderPath = project.ProjectPath
+                let path = pathJoin [| folderPath; name + ".v" |]
+                let code = getCode dialogData
+                match writeFile path code with
+                | Ok _ -> ()
+                | Error _ -> failwithf "Writing verilog file FAILED" 
             dispatch ClosePopup
     let isDisabled =
         fun (dialogData : PopupDialogData) ->
