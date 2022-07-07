@@ -62,6 +62,7 @@ type PopupDialogData = {
     MemoryEditorData : MemoryEditorData option // For memory editor and viewer.
     WaveSetup: MoreWaveSetup option
     Progress: PopupProgress option
+    VerilogCode: string option
 }
 
 type TopMenu = | Closed | Project | Files
@@ -313,6 +314,7 @@ type Msg =
     | ShowStaticInfoPopup of (string * ReactElement * (Msg -> Unit))
     | ClosePopup
     | SetPopupDialogText of string option
+    | SetPopupDialogCode of string option
     | SetPopupDialogInt of int option
     | SetPopupDialogTwoInts of (int64 option * IntMode * string option)
     | SetPropertiesExtraDialogText of string option

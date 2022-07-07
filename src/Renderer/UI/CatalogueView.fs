@@ -343,6 +343,34 @@ let private createMemoryPopup memType model (dispatch: Msg -> Unit) =
             addressWidth < 1 || wordWidth < 1 || error <> None
     dialogPopup title body buttonText buttonAction isDisabled dispatch
 
+
+
+let createVerilogComp model =
+    failwithf "Not Implemented yet!"
+
+let private createVerilogPopup model dispatch =
+    let title = sprintf "Create Combinational Logic Components using Verilog" 
+    let beforeText =
+        fun _ -> str <| sprintf "How do you want to name your Verilog Component?"
+    let placeholder = "Component name"
+    let body= dialogVerilogCompBody beforeText placeholder dispatch
+    let buttonText = "Save"
+    let buttonAction =
+        fun (dialogData : PopupDialogData) ->
+            failwithf "Not implemented yet!" 
+            // createCompStdLabel (regType inputInt) model dispatch
+            dispatch ClosePopup
+    let isDisabled =
+        fun (dialogData : PopupDialogData) ->
+            let notGoodLabel =
+                getText dialogData
+                |> Seq.toList
+                |> List.tryHead
+                |> function | Some ch when  System.Char.IsLetter ch -> false | _ -> true
+            (getInt dialogData < 1) || notGoodLabel
+    dialogVerilogPopup title body buttonText buttonAction isDisabled [Width "50%"] dispatch
+
+
 let private makeMenuGroup title menuList =
     details [Open false] [
         summary [menuLabelStyle] [ str title ]
@@ -459,6 +487,12 @@ let viewCatalogue model dispatch =
                         "Every design sheet is available for use in other sheets as a custom component: \
                         it can be added any number of times, each instance replicating the sheet logic"
                         (makeCustomList styles model dispatch)
+
+                    makeMenuGroup
+                        "Verilog"
+                        [ catTip1 "New Verilog Component" (fun _ -> createVerilogPopup model dispatch) "Write combinational logic in Verilog. \
+                                                    Use it as a Custom Component"
+                          catTip1 "decoder.v" (fun _ -> createVerilogComp  model) ""]
                 ]
 
         (viewCatOfModel) model 
