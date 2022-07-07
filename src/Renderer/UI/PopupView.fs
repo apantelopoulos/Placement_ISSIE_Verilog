@@ -78,8 +78,23 @@ type CodeEditorProps =
 
 
 
+importSideEffects "./prism.css"
+
 let inline codeEditor (props : CodeEditorProps list) (elems : ReactElement list) : ReactElement =
     ofImport "default" "react-simple-code-editor" (keyValueList CaseRules.LowerFirst props) elems
+
+
+type PrismCore =
+    abstract highlight : string * obj -> string
+
+[<ImportAll("./prism.js")>]
+let Prism: PrismCore = jsNative
+
+[<Emit("Prism.languages.verilog")>]
+let language : obj = jsNative
+
+// importSideEffects "prismjs/components/prism-verilog"
+importSideEffects "prismjs/components/prism-clike"
 
 
 /////////////////////   CODE EDITOR CLASS  /////////////////////////
@@ -108,7 +123,7 @@ type CE (props) =
                     (this.setState (fun s _ -> {s with code = txt}))
                     props.Dispatch <| SetPopupDialogCode (Some txt)
                 )             
-                Highlight (fun code -> code);]
+                Highlight (fun code -> Prism.highlight(code,language));]
                 []
         
 
