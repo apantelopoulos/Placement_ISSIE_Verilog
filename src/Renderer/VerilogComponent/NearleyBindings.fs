@@ -6,7 +6,7 @@ open Fable.Core.JsInterop
 
 [<Import("default", from="nearley")>]
 
-[<Emit("import * as verilogGrammar from './verilog.js' ")>]
+[<Emit("import * as verilogGrammar from './verilogGrammar.js' ")>]
 let importGrammar : unit = jsNative
 
 [<Emit("import {fix} from './parser.js' ")>]

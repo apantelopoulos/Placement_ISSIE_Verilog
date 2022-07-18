@@ -1,6 +1,6 @@
 
 const nearley = require("nearley");
-const verilogGrammar = require("./verilog.js");
+const verilogGrammar = require("./verilogGrammar.js");
 
 export function parseFromFile(source) {
     try {

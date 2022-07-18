@@ -364,7 +364,7 @@ let private createVerilogPopup model dispatch =
     let placeholder = "Component name"
     let body= dialogVerilogCompBody beforeText placeholder dispatch
     let buttonText = "Save"
-    let buttonAction =
+    let saveButtonAction =
         fun (dialogData : PopupDialogData) ->
             match model.CurrentProj with
             | None -> failwithf "What? current project cannot be None at this point in writing Verilog Component"
@@ -407,7 +407,7 @@ let private createVerilogPopup model dispatch =
                 |> List.tryHead
                 |> function | Some ch when  System.Char.IsLetter ch -> false | _ -> true
             (getInt dialogData < 1) || notGoodLabel
-    dialogVerilogPopup title body buttonText buttonAction isDisabled [Width "50%"] dispatch
+    dialogVerilogPopup title body buttonText saveButtonAction compileButtonAction isDisabled [Width "50%"] dispatch
 
 
 let private makeMenuGroup title menuList =

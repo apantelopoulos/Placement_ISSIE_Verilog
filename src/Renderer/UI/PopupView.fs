@@ -710,7 +710,7 @@ let dialogPopup title body buttonText buttonAction isDisabled dispatch =
     dynamicClosablePopup title body foot [] dispatch
 
 
-let dialogVerilogPopup title body buttonText buttonAction isDisabled extraStyle dispatch =
+let dialogVerilogPopup title body buttonText saveButtonAction compileButtonAction isDisabled extraStyle dispatch =
     let foot =
         fun (dialogData : PopupDialogData) ->
             Level.level [ Level.Level.Props [ Style [ Width "100%" ] ] ] [
@@ -726,10 +726,17 @@ let dialogVerilogPopup title body buttonText buttonAction isDisabled extraStyle 
                     ]
                     Level.item [] [
                         Button.button [
+                            // Button.Disabled (isDisabled dialogData)
+                            Button.Color IsInfo
+                            Button.OnClick (fun _ -> compileButtonAction dialogData)
+                        ] [ str "Compile" ]
+                    ]
+                    Level.item [] [
+                        Button.button [
                             Button.Disabled (isDisabled dialogData)
                             Button.Color IsPrimary
-                            Button.OnClick (fun _ -> buttonAction dialogData)
-                        ] [ str "Save" ]
+                            Button.OnClick (fun _ -> saveButtonAction dialogData)
+                        ] [ str buttonText ]
                     ]
                 ]
             ]
