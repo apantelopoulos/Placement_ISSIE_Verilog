@@ -19,6 +19,10 @@
     <Compile Include="Common\Helpers.fs" />
     <Compile Include="Common\TimeHelpers.fs" />
     <Compile Include="Common\WidthInferer.fs" />
+
+    <Compile Include="VerilogComponent\VerilogTypes.fs" />
+    <Compile Include="VerilogComponent\NearleyBindings.fs" />    
+
     <!-- simulator -->
     <Compile Include="Simulator\SimulatorTypes.fs" />
     <Compile Include="Simulator\NumberHelpers.fs" />
@@ -49,7 +53,6 @@
     <Compile Include="DrawBlock\Sheet.fs" />
     <Compile Include="DrawBlock\SheetUpdate.fs" />
     <!-- UI -->
-    <Compile Include="UI/VerilogTypes.fs" />
     <Compile Include="UI/ModelType.fs" />
     <Compile Include="UI/Style.fs" />
     <Compile Include="UI\PopupView.fs" />

@@ -20,6 +20,10 @@ open Fable.Core
 open FilesIO
 
 
+NearleyBindings.importGrammar
+NearleyBindings.importFix
+NearleyBindings.importParser
+
 
 let private menuItem styles label onClick =
     Menu.Item.li
