@@ -18,6 +18,8 @@ open Sheet.SheetInterface
 open DrawModelType
 open Fable.Core
 open FilesIO
+open Fable.SimpleJson
+open Fable.Core.JsInterop
 
 
 NearleyBindings.importGrammar
@@ -375,6 +377,28 @@ let private createVerilogPopup model dispatch =
                 | Ok _ -> ()
                 | Error _ -> failwithf "Writing verilog file FAILED" 
             dispatch ClosePopup
+    
+    let compileButtonAction =
+        fun (dialogData : PopupDialogData) ->
+            // createComponent (compType inputInt) (formatLabelFromType (compType inputInt) inputText) model dispatch            
+            match model.CurrentProj with
+            | None -> failwithf "What? current project cannot be None at this point in compiling Verilog Component"
+            | Some project ->
+                let code = getCode dialogData
+                let parsedCode = NearleyBindings.parseFromFile(code)
+                let output = Json.parseAs<VerilogTypes.ParserOutput> parsedCode
+                if isNullOrUndefined output.Error then
+                    let result = Option.get output.Result
+                    // printfn "Input AST: %s" result
+                    let fixedAST = NearleyBindings.fix result
+                    let linesIndex = Option.get output.NewLinesIndex |> Array.toList
+                    printfn "NewLinesIndex: %A" linesIndex
+                    let parsedAST = fixedAST |> Json.parseAs<VerilogTypes.VerilogInput>
+                    printfn "Parsed AST: %A" parsedAST
+                else
+                    let err = Option.get output.Error
+                    printfn "Syntax Error: %A" err
+    
     let isDisabled =
         fun (dialogData : PopupDialogData) ->
             let notGoodLabel =
